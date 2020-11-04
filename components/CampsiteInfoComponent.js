@@ -61,9 +61,13 @@ function RenderCampsite(props) {
 
     const recognizeDrag = ({dx}) => (dx < -200) ? true : false;
 
+    const recognizeComment = ({dx}) => (dx > 200) ? true : false;
+
+
     const panResponder = PanResponder.create({
         onStartShouldSetPanResponder: () => true,
         onPanResponderGrant: () => {
+            console.log('insideonPanResponderGrant');
             view.current.rubberBand(1000)
             .then(endState => console.log(endState.finished ? 'finished' : 'canceled'));
         },
@@ -87,7 +91,8 @@ function RenderCampsite(props) {
                     ],
                     { cancelable: false }
                 );
-            }
+            } else if(recognizeComment(gestureState)) {
+                 props.onShowModal()};
             return true;
         }
     });

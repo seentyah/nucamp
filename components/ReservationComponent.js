@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { Text, View, ScrollView, StyleSheet,
-    Picker, Switch, Button, Modal } from 'react-native';
+    Picker, Switch, Button, Modal ,Alert } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
+import * as Animatable from 'react-native-animatable';
 
 class Reservation extends Component {
 
@@ -26,7 +27,29 @@ class Reservation extends Component {
 
     handleReservation() {
         console.log(JSON.stringify(this.state));
-        this.toggleModal();
+        //this.toggleModal();
+        
+                    Alert.alert(
+                                    'Begin Search ?',
+                                    'Number of Campers:' + ' ' + this.state.campers + '\n' + '\n'+
+                                    'Hike-in?'+ ' ' + (this.state.hikeIn ? 'True': 'False') + '\n\n' +
+                                    'Date:' + this.state.date.toLocaleDateString('en-US'),  
+                                    [
+                                        {
+                                            text: 'Cancel',
+                                            style: 'cancel',
+                                            onPress: () => console.log('Cancel Pressed')
+                                        },
+                                        {
+                                            text: 'OK',
+                                            onPress: () => this.resetForm()
+                                                
+                                        }
+                                    ],  
+                                    { cancelable: false }
+                                )
+                            
+                        
     }
 
     resetForm() {
@@ -39,19 +62,20 @@ class Reservation extends Component {
         });
     }
     
-    handleReservation() {
-        console.log(JSON.stringify(this.state));
-        this.setState({
-            campers: 1,
-            hikeIn: false,
-            date: new Date(),
-            showCalendar: false     
-        });
-    }
+    // handleReservation() {
+    //     console.log(JSON.stringify(this.state));
+    //     this.setState({
+    //         campers: 1,
+    //         hikeIn: false,
+    //         date: new Date(),
+    //         showCalendar: false     
+    //     });
+    // }
 
     render() {
         return (
             <ScrollView>
+                <Animatable.View animation='zoomIn' duration={2000} delay={1000}>
                 <View style={styles.formRow}>
                     <Text style={styles.formLabel}>Number of Campers</Text>
                     <Picker
@@ -67,6 +91,7 @@ class Reservation extends Component {
                         <Picker.Item label='6' value='6' />
                     </Picker>
                 </View>
+                
                 <View style={styles.formRow}>
                     <Text style={styles.formLabel}>Hike-In?</Text>
                     <Switch
@@ -106,7 +131,7 @@ class Reservation extends Component {
                         accessibilityLabel='Tap me to search for available campsites to reserve'
                     />
                 </View>
-                <Modal
+                {/* <Modal
                     animationType={'slide'}
                     transparent={false}
                     visible={this.state.showModal}
@@ -132,7 +157,8 @@ class Reservation extends Component {
                             title='Close'
                         />
                     </View>
-                </Modal>
+                </Modal>  */}
+                </Animatable.View>
             </ScrollView>
         );
     }
